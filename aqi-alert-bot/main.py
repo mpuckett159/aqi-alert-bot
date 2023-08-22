@@ -88,7 +88,10 @@ def main():
     
     while True:
         # make request
-        r = requests.get(f'https://api.waqi.info/feed/geo:{lat_long}/?token={aqi_api_token}')
+        try:
+            r = requests.get(f'https://api.waqi.info/feed/geo:{lat_long}/?token={aqi_api_token}')
+        except Exception as e:
+            print(f"Unexpected error when requesting API:\n{e}")
 
         if r.status_code != 200:
             print("error making request, please see error message below")
