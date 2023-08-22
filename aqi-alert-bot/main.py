@@ -70,16 +70,21 @@ def main():
     aqi_api_token = _env("AQI_API_TOKEN")
     lat_long = _env("LAT_LONG")
     discord_webhook = _env("DISCORD_WEBHOOK_URL")
+    aqi_threshold = int(_env("AQI_THRESHOLD"))
     print(f"AQI API Token = {aqi_api_token}")
     print(f"Latitude and Longitude = {lat_long}")
     print(f"Discord Webhook URL = {discord_webhook}")
+    print(f"AQI threshold = {aqi_threshold}")
 
     # track prior AQI variable so we don't alert constantly only when
     # the threshold is crossed
     hist_aqi = 0
 
     # track errors so we only alert after so many failures
-    error_max = 10
+    error_max = int(_env("MAX_ERRORS"))
+
+    # poll interval
+    poll_interval = int(_env("POLL_INTERVAL"))
     
     while True:
         # make request
@@ -95,9 +100,9 @@ def main():
                 send_discord_message(url=DISCORD_WEBHOOK_URL, message=error(error_message=r.text))
         else:
             aqi = int(r.json()['data']['aqi'])
-            if aqi > 100 and hist_aqi < 100:
+            if aqi > aqi_threshold and hist_aqi < aqi_threshold:
                 send_discord_message(url=DISCORD_WEBHOOK_URL, message=above_threshold(aqi=aqi))
-            elif aqi < 100 and hist_aqi > 100:
+            elif aqi < aqi_threshold and hist_aqi > aqi_threshold:
                 send_discord_message(url=DISCORD_WEBHOOK_URL, message=below_threshold(aqi=aqi))
             else:
                 print(f"AQI is {aqi}, previous AQI was {hist_aqi}, no need to send message")
@@ -107,7 +112,7 @@ def main():
 
 
         # wait 1 minute before next poll
-        time.sleep(60)
+        time.sleep(poll_interval)
 
 
 if __name__ == "__main__":
