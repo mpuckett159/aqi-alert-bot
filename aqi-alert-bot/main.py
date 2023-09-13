@@ -33,19 +33,19 @@ def send_discord_message(url: str, message: str) -> None:
     webhook.execute()
 
 
-def above_threshold(aqi: int) -> str:
+def above_threshold(aqi: int, aqi_threshold: int) -> str:
     return dedent(
         f"""\
-    @here AQI is now above 100
+    @here AQI is now above {aqi_threshold}
     Current AQI = {aqi}
     """
     )
 
 
-def below_threshold(aqi: int) -> str:
+def below_threshold(aqi: int, aqi_threshold: int) -> str:
     return dedent(
         f"""\
-    @everyone AQI is now below 100
+    @everyone AQI is now below {aqi_threshold}
     Current AQI = {aqi}
     """
     )
@@ -104,9 +104,9 @@ def main():
         else:
             aqi = int(r.json()['data']['aqi'])
             if aqi > aqi_threshold and hist_aqi < aqi_threshold:
-                send_discord_message(url=DISCORD_WEBHOOK_URL, message=above_threshold(aqi=aqi))
+                send_discord_message(url=DISCORD_WEBHOOK_URL, message=above_threshold(aqi=aqi, aqi_threshold=aqi_threshold))
             elif aqi < aqi_threshold and hist_aqi > aqi_threshold:
-                send_discord_message(url=DISCORD_WEBHOOK_URL, message=below_threshold(aqi=aqi))
+                send_discord_message(url=DISCORD_WEBHOOK_URL, message=below_threshold(aqi=aqi, aqi_threshold=aqi_threshold))
             else:
                 print(f"AQI is {aqi}, previous AQI was {hist_aqi}, no need to send message")
 
