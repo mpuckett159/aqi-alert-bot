@@ -1,9 +1,10 @@
-FROM python:3.9-slim
+FROM rust:1.72.1 as build
 
-WORKDIR /app
-COPY requirements.txt .
-COPY aqi-alert-bot/main.py .
-RUN pip install -r requirements.txt
+COPY src/ /build/src
+COPY Cargo.toml /build/Cargo.toml
+COPY Cargo.lock /build/Cargo.lock
 
-CMD ["python", "-u", "main.py"]
+WORKDIR /build
+RUN cargo build --release
 
+CMD ["/build/target/release/aqi-alert-bot"]
