@@ -55,7 +55,7 @@ async fn main() {
             webhook
                 .execute(&http, false, |w| {
                     w.content(format!(
-                        "@everyone AQI is now above {aqi_threshold}\nCurrent AQI = {aqi}"
+                        "AQI is now above {aqi_threshold}\nCurrent AQI = {aqi}"
                     ))
                 })
                 .await
@@ -64,7 +64,7 @@ async fn main() {
             webhook
                 .execute(&http, false, |w| {
                     w.content(format!(
-                        "@everyone AQI is now below {aqi_threshold}\nCurrent AQI = {aqi}"
+                        "AQI is now below {aqi_threshold}\nCurrent AQI = {aqi}"
                     ))
                 })
                 .await
