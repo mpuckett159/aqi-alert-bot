@@ -19,7 +19,8 @@ Discord bot to alert when AQI passes a specified threshold.
    1. Copy webhook URL and add to the `.env` file:
 
       ```shell
-      DISCORD_WEBHOOK_URL="https://example.com"
+      # no quotes
+      DISCORD_WEBHOOK_URL=https://example.com
       ```
 
 1. [Get latitude and longitude][latlong], and add to `.env` in the format
@@ -27,7 +28,8 @@ Discord bot to alert when AQI passes a specified threshold.
    delimiter, not a comma)
 
    ```shell
-   LAT_LONG="33.6772973;-106.477862"
+   # no quotes
+   LAT_LONG=33.6772973;-106.477862
    ```
 
 1. Add additional configuration variables to `.env`:
@@ -44,8 +46,8 @@ Discord bot to alert when AQI passes a specified threshold.
 
    ```shell
    AQI_API_TOKEN=some-token
-   DISCORD_WEBHOOK_URL="https://discord.com/api/webhooks/some-stuff"
-   LAT_LONG="33.6772973;-106.477862"
+   DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/some-stuff
+   LAT_LONG=33.6772973;-106.477862
    AQI_THRESHOLD=50
    MAX_ERRORS=5
    POLL_INTERVAL=600
@@ -58,8 +60,14 @@ Discord bot to alert when AQI passes a specified threshold.
       the environment variables when inside the directory, and reload them if
       they're changed.
 
-   1. Option 2: manually run a command like `set -a; source .env; set +a` (if
-      using a POSIX-compliant shell like `bash` or `zsh`)
+   1. Option 2: manually run a command like [this][thx-stackoverflow]: (if using
+      a POSIX-compliant shell like `bash` or `zsh`)
+
+      ```bash
+      while IFS== read -r key value; do
+        printf -v "$key" %s "$value" && export "$key"
+      done <.env
+      ```
 
 1. Run the bot: `cargo run`
 
@@ -68,4 +76,4 @@ Discord bot to alert when AQI passes a specified threshold.
 [latlong]: https://www.latlong.net/convert-address-to-lat-long.html
 [direnv-install]: https://direnv.net/docs/installation.html
 [direnv-hooks]: https://direnv.net/docs/hook.html
-[shuttle]: https://github.com/shuttle-hq/shuttle
+[thx-stackoverflow]: https://stackoverflow.com/questions/43267413/how-to-set-environment-variables-from-env-file
