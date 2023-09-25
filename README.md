@@ -71,6 +71,19 @@ Discord bot to alert when AQI passes a specified threshold.
 
 1. Run the bot: `cargo run`
 
+## docker-compose
+
+The repo comes with a docker-compose file that should be trivially runnable using:
+
+```shell
+docker-compose build
+docker-compose up -d
+```
+
+NOTE: Having the .env file is required for the build step to work. Yes it should not necessarily be required but it is for now, apologies.
+
+The build step will create a container with the tag `aqi-alert-bot-aqi-alert-bot`. Note that there will be more containers built in the future because I'll need something to persist data and will likely just use Redis unless I can hack something goofy into Discord lol.
+
 [aqi-token]: https://aqicn.org/data-platform/token/
 [create-webhook]: https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks
 [latlong]: https://www.latlong.net/convert-address-to-lat-long.html
