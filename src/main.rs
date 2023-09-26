@@ -8,6 +8,7 @@ use tokio::time::{sleep, Duration};
 #[tokio::main]
 async fn main() {
     // Set necessary env vars
+let random = 0;
     let aqi_api_token =
         env::var("AQI_API_TOKEN").expect("Expected an AQI_API_TOKEN in the environment");
 
